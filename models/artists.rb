@@ -41,8 +41,8 @@ class Artist
   sql = "DELETE FROM artists
   WHERE id = $1"
   values = [@id]
-  db.prepare("delete_one", sql)
-  db.exec_prepared("delete_one", values)
+  db.prepare("delete", sql)
+  db.exec_prepared("delete", values)
   db.close()
 end
 
@@ -54,7 +54,7 @@ end
     db.prepare("album", sql)
     result = db.exec_prepared("album", values)
     db.close()
-    return result[0]
+    return result
   end
 
 

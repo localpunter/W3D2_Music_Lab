@@ -17,6 +17,12 @@ artist2 = Artist.new({
 
 artist2.save
 
+artist3 = Artist.new({
+  "name" => "Lady Gaga"
+  })
+
+artist3.save
+
 album1 = Album.new({
   "album_name" => "Golden Greats",
   "genre" => "Indie",
@@ -48,6 +54,22 @@ album4 = Album.new({
   })
 
 album4.save
+
+album5 = Album.new({
+  "album_name" => "The Fame",
+  "genre" => "Pop",
+  "artist_id" => artist3.id
+  })
+
+album5.save
+
+album6 = Album.new({
+  "album_name" => "Artpop",
+  "genre" => "Pop",
+  "artist_id" => artist3.id
+  })
+
+album6.save
 
 
 

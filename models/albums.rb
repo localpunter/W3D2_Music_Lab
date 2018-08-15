@@ -39,10 +39,20 @@ attr_accessor :album_name, :genre
     db.close
   end
 
+  def delete()
+  db = PG.connect({ dbname: 'music_collection', host: 'localhost'})
+  sql = "DELETE FROM albums
+  WHERE id = $1"
+  values = [@id]
+  db.prepare("delete", sql)
+  db.exec_prepared("delete", values)
+  db.close()
+end
+
   def artist
     db = PG.connect({ dbname: 'music_collection', host: 'localhost'})
     sql = "SELECT * FROM artists
-           WHERE artist_id = $1"
+           WHERE id = $1"
     values = [@artist_id]
     db.prepare("artist", sql)
     result = db.exec_prepared("artist", values)
