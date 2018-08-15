@@ -34,8 +34,21 @@ attr_accessor :name
     db.prepare("update", sql)
     db.exec_prepared("update", values)
     db.close
-
   end
+
+  def album
+    db = PG.connect({ dbname: 'music_collection', host: 'localhost'})
+    sql = "SELECT * FROM albums
+           WHERE artist_id = $1"
+    values = [@id]
+    db.prepare("album", sql)
+    result = db.exec_prepared("album", values)
+    db.close()
+    return result[0]
+  end
+
+
+
 
   def Artist.all()
     db = PG.connect({ dbname: "music_collection", host: "localhost"})
