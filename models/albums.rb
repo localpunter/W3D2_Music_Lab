@@ -51,7 +51,7 @@ attr_accessor :album_name, :genre
   end
 
 
-  
+
 
   def Album.all()
     db = PG.connect({ dbname: "music_collection", host: "localhost"})
@@ -65,16 +65,24 @@ attr_accessor :album_name, :genre
   def Album.find_by_id(id)
     db = PG.connect({ dbname: "music_collection", host: "localhost"})
     sql = "SELECT * FROM albums WHERE id = $1"
-  values = [id]
-  db.prepare("find_by_id", sql)
-  result = db.exec_prepared("find_by_id", values)
-  db.close()
-  if result.count > 0
-    return result[0]
-  else
-    return nil
+    values = [id]
+    db.prepare("find_by_id", sql)
+    result = db.exec_prepared("find_by_id", values)
+    db.close()
+    if result.count > 0
+      return result[0]
+    else
+      return nil
+    end
   end
-end
+
+  def Album.delete_all()
+    db = PG.connect({ dbname: 'music_collection', host: 'localhost'})
+    sql = "DELETE FROM albums"
+    db.prepare("delete_all", sql)
+    db.exec_prepared("delete_all")
+    db.close()
+  end
 
 
 

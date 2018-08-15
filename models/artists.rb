@@ -2,8 +2,8 @@ require('pg')
 
 class Artist
 
-attr_reader :id
-attr_accessor :name
+  attr_reader :id
+  attr_accessor :name
 
 
   def initialize(info)
@@ -14,9 +14,9 @@ attr_accessor :name
   def save()
     db = PG.connect({ dbname: "music_collection", host: "localhost"})
     sql = "INSERT INTO artists
-      (name)
-      VALUES
-      ($1) RETURNING *"
+    (name)
+    VALUES
+    ($1) RETURNING *"
     values = [@name]
     db.prepare("save", sql)
     @id = db.exec_prepared("save", values)[0]["id"].to_i
@@ -33,13 +33,23 @@ attr_accessor :name
     values = [@name, @id]
     db.prepare("update", sql)
     db.exec_prepared("update", values)
-    db.close
+    db.close()
   end
+
+  def delete()
+  db = PG.connect({ dbname: 'music_collection', host: 'localhost'})
+  sql = "DELETE FROM artists
+  WHERE id = $1"
+  values = [@id]
+  db.prepare("delete_one", sql)
+  db.exec_prepared("delete_one", values)
+  db.close()
+end
 
   def album
     db = PG.connect({ dbname: 'music_collection', host: 'localhost'})
     sql = "SELECT * FROM albums
-           WHERE artist_id = $1"
+    WHERE artist_id = $1"
     values = [@id]
     db.prepare("album", sql)
     result = db.exec_prepared("album", values)
@@ -62,16 +72,24 @@ attr_accessor :name
   def Artist.find_by_id(id)
     db = PG.connect({ dbname: "music_collection", host: "localhost"})
     sql = "SELECT * FROM artists WHERE id = $1"
-  values = [id]
-  db.prepare("find_by_id", sql)
-  result = db.exec_prepared("find_by_id", values)
-  db.close()
-  if result.count > 0
-    return result[0]
-  else
-    return nil
+    values = [id]
+    db.prepare("find_by_id", sql)
+    result = db.exec_prepared("find_by_id", values)
+    db.close()
+    if result.count > 0
+      return result[0]
+    else
+      return nil
+    end
   end
-end
+
+  def Artist.delete_all()
+    db = PG.connect({ dbname: 'music_collection', host: 'localhost'})
+    sql = "DELETE FROM artists"
+    db.prepare("delete_all", sql)
+    db.exec_prepared("delete_all")
+    db.close()
+  end
 
 
 
